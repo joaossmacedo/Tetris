@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "colisoes.h"
+#include "menu.h"
+#include "jogo.h"
 #define DOWN 258
 #define UP 259
 #define LEFT 260
@@ -35,6 +37,7 @@ int main(){
   int opcao, x, y, a, b, eixoX, eixoY, desce, desceDois, direita, esquerda, veloc, velocProx;
   long score, highscore;
   FILE * myFile;
+
 
   //inicializa o randomico
   srand(time(NULL));
@@ -106,8 +109,6 @@ int main(){
 
     //esse eh o loop em que as peca sao criadas
     while (1) {
-      randomico = rand() % 7;
-
       //limpa a peca e o temporario
       for (y = 0; y < 4; y++) {
         for (x = 0; x < 4; x++) {
@@ -117,56 +118,7 @@ int main(){
       }
 
       //faz a peca
-      switch(randomico){
-        case 0:
-        // O
-        peca[1][1] = PEDRA;
-        peca[2][1] = PEDRA;
-        peca[1][2] = PEDRA;
-        peca[2][2] = PEDRA;
-        break;
-        case 1:
-        // I
-        peca[1][0] = PEDRA;
-        peca[1][1] = PEDRA;
-        peca[1][2] = PEDRA;
-        peca[1][3] = PEDRA;
-        break;
-        case 2:
-        // S
-        peca[1][1] = PEDRA;
-        peca[2][1] = PEDRA;
-        peca[2][2] = PEDRA;
-        peca[3][2] = PEDRA;
-        break;
-        case 3:
-        // Z
-        peca[1][1] = PEDRA;
-        peca[2][1] = PEDRA;
-        peca[0][2] = PEDRA;
-        peca[1][2] = PEDRA;
-        break;
-        case 4:
-        // T
-        peca[2][1] = PEDRA;
-        peca[1][2] = PEDRA;
-        peca[2][2] = PEDRA;
-        peca[3][2] = PEDRA;
-        break;
-        case 5:
-        peca[1][1] = PEDRA;
-        peca[1][2] = PEDRA;
-        peca[2][2] = PEDRA;
-        peca[3][2] = PEDRA;
-        break;
-        case 6:
-        // J
-        peca[3][1] = PEDRA;
-        peca[1][2] = PEDRA;
-        peca[2][2] = PEDRA;
-        peca[3][2] = PEDRA;
-        break;
-      }
+      criar_peca(peca);
 
       //impede a peca de sair pelas laterais
       dir = verificaD(peca);
@@ -344,7 +296,7 @@ int main(){
       nivel = modificaNivel(contador);
       velocProx = modificaVelocidade(contador);
       if (veloc != velocProx) imprimirMenu(score, highscore, nivel);
-      veloc = velocProx;
+        veloc = velocProx;
 
       wrefresh(win);
     }
