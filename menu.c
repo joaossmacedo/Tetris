@@ -1,30 +1,30 @@
 #include <ncurses.h>
 #include <stdio.h>
+#include "menu.h"
 
-//imprime o menu
-void imprimirMenu(long score, long highscore, int nivel){
+void printMenu(long score, long highscore, int level){
   clear();
-  //menu
+
   move(2,2);
   printw("TETRIS");
-  move(3,2);
-  printw("Feito por:");
   move(4,2);
-  printw("Antonio");
+  printw("Made by:");
   move(5,2);
-  printw("Ademario Junior");
+  printw("Antonio");
   move(6,2);
-  printw("Danilo Felipe");
+  printw("Ademario Junior");
   move(7,2);
-  printw("Francisco Guilherme");
+  printw("Danilo Felipe");
   move(8,2);
+  printw("Guilherme Francsico");
+  move(9,2);
   printw("Joao Macedo");
   move(17,49);
-  printw("Para parar o jogo aperte P");
+  printw("Press P to stop playing");
   move(19,49);
-  printw("Para sair do jogo aperte Q");
+  printw("Press Q to leave the game");
   move(2,55);
-  printw("Nivel %d", nivel);
+  printw("Level %d", level);
   move(3,55);
   printw("SCORE");
   move(4,55);
@@ -32,43 +32,39 @@ void imprimirMenu(long score, long highscore, int nivel){
   move(6,55);
   printw("HIGHSCORE");
   move(7, 55);
-  if (score > highscore)  printw("%ld", score);
-  else printw("%ld", highscore);
-
+  if (score > highscore){
+    printw("%ld", score);
+  }else {
+    printw("%ld", highscore);
+  }
   refresh();
 }
 
-//recebe o highscore
-int recebeHighscore(FILE * myFile){
+int getHighscore(FILE * highscoreFile){
   long highscore;
-  //abre o arquivo
-  myFile = fopen("rank.txt", "r");
+  highscoreFile = fopen("rank.txt", "r");
 
-  //pega o valor que esta no arquivo e coloca na variavel highscore
-  fscanf(myFile, "%ld", &highscore);    
+  fscanf(highscoreFile, "%ld", &highscore);    
 
-  //fecha o arquivo
-  fclose(myFile);
+  fclose(highscoreFile);
 
   return highscore;
 }
 
-
-//salva o highscore
-void salvarHighscore(FILE * myFile, long score){
+void saveHighscore(FILE * highscoreFile, long score){
   long highscore;
 
-  myFile = fopen("rank.txt", "r");
+  highscoreFile = fopen("rank.txt", "r");
 
-  fscanf(myFile, "%ld", &highscore);    
+  fscanf(highscoreFile, "%ld", &highscore);    
 
-  fclose(myFile);
+  fclose(highscoreFile);
 
   if(score > highscore){
-    myFile = fopen("rank.txt", "w");
+    highscoreFile = fopen("rank.txt", "w");
 
-    fprintf(myFile, "%ld", score);
+    fprintf(highscoreFile, "%ld", score);
 
-    fclose(myFile);
+    fclose(highscoreFile);
   }
 }

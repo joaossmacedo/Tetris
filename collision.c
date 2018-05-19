@@ -1,49 +1,49 @@
 #include <ncurses.h>
 #include <stdio.h>
-#include "colisoes.h"
-#define PEDRA '*'
-#define BRANCA 0
-#define LARG 10
-#define ALT 20
+#include "collision.h"
+#define BLOCK '#'
+#define EMPTY 0
+#define WIDTH 10
+#define HEIGHT 20
 
 
 
-//impede a peca de sair pela direita do tabuleiro
-int verificaD(char peca[4][4]){
+//returs the minimum distance between the piece and the right side of the board
+int minDistanceRight(char piece[4][4]){
   int dir, dir1, dir2, dir3, dir4, x, c;
-  dir1 = dir2 = dir3 = dir4 =0;
+  dir1 = dir2 = dir3 = dir4 = 0;
 
   c = 0;
   for (x = 4 - 1; x >= 0; x--) {
-    if(peca[x][0] != PEDRA && c == 0) {
+    if(piece[x][0] != BLOCK && c == 0) {
       dir1++;
-    }else if(peca[x][0] == PEDRA && c == 0){
+    }else if(piece[x][0] == BLOCK && c == 0){
       c++;
     }
   }
 
   c = 0;
   for (x = 4 - 1; x >= 0; x--) {
-    if(peca[x][1] != PEDRA && c == 0) {
+    if(piece[x][1] != BLOCK && c == 0) {
       dir2++;
-    }else if(peca[x][1] == PEDRA && c == 0){
+    }else if(piece[x][1] == BLOCK && c == 0){
       c++;
     }
   }
   c = 0;
   for (x = 4 - 1; x >= 0; x--) {
-    if(peca[x][2] != PEDRA && c == 0) {
+    if(piece[x][2] != BLOCK && c == 0) {
       dir3++;
-    }else if(peca[x][2] == PEDRA && c == 0){
+    }else if(piece[x][2] == BLOCK && c == 0){
       c++;
     }
   }
 
   c = 0;
   for (x = 4 - 1; x >= 0; x--) {
-    if(peca[x][3] != PEDRA && c == 0) {
+    if(piece[x][3] != BLOCK && c == 0) {
       dir4++;
-    }else if(peca[x][3] == PEDRA && c == 0){
+    }else if(piece[x][3] == BLOCK && c == 0){
       c++;
     }
   }
@@ -67,43 +67,43 @@ int verificaD(char peca[4][4]){
   }
 }
 
-//impede a peca de sair pela esquerda do tabuleiro
-int verificaE(char peca[4][4]){
+//returs the minimum distance between the piece and the left side of the board
+int minDistanceLeft(char piece[4][4]){
   int esq, esq1, esq2, esq3, esq4, x, c;
   esq1 = esq2 = esq3 = esq4 = 0;
 
   c = 0;
   for (x = 0; x < 4; x++) {
-    if(peca[x][0] != PEDRA && c == 0) {
+    if(piece[x][0] != BLOCK && c == 0) {
       esq1++;
-    }else if(peca[x][0] == PEDRA && c == 0){
+    }else if(piece[x][0] == BLOCK && c == 0){
       c++;
     }
   }
 
   c = 0;
   for (x = 0; x < 4; x++) {
-    if(peca[x][1] != PEDRA && c == 0) {
+    if(piece[x][1] != BLOCK && c == 0) {
       esq2++;
-    }else if(peca[x][1] == PEDRA && c == 0){
+    }else if(piece[x][1] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0;
   for (x = 0; x < 4; x++) {
-    if(peca[x][2] != PEDRA && c == 0) {
+    if(piece[x][2] != BLOCK && c == 0) {
       esq3++;
-    }else if(peca[x][2] == PEDRA && c == 0){
+    }else if(piece[x][2] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0;
   for (x = 0; x < 4; x++) {
-    if(peca[x][3] != PEDRA && c == 0) {
+    if(piece[x][3] != BLOCK && c == 0) {
       esq4++;
-    }else if(peca[x][3] == PEDRA && c == 0){
+    }else if(piece[x][3] == BLOCK && c == 0){
       c++;
     }
   }
@@ -127,43 +127,43 @@ int verificaE(char peca[4][4]){
   }
 }
 
-//impede a peca de sair por baixo do tabuleiro
-int verificaI(char peca[4][4]){
+//returs the minimum distance between the piece and the bottom of the board
+int minDistanceBottom(char piece[4][4]){
   int inf, inf1, inf2, inf3, inf4, y, c;
   inf1 = inf2 = inf3 = inf4 = 0;
 
   c = 0; 
   for (y = 4 - 1; y >= 0; y--) {
-    if(peca[0][y] != PEDRA && c == 0) {
+    if(piece[0][y] != BLOCK && c == 0) {
       inf1++;
-    }else if(peca[0][y] == PEDRA && c == 0){
+    }else if(piece[0][y] == BLOCK && c == 0){
       c++;
     }
   }
 
   c = 0; 
   for (y = 4 - 1; y >= 0; y--) {
-    if(peca[1][y] != PEDRA && c == 0) {
+    if(piece[1][y] != BLOCK && c == 0) {
       inf2++;
-    }else if(peca[1][y] == PEDRA && c == 0){
+    }else if(piece[1][y] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0; 
   for (y = 4 - 1; y >= 0; y--) {
-    if(peca[2][y] != PEDRA && c == 0) {
+    if(piece[2][y] != BLOCK && c == 0) {
       inf3++;
-    }else if(peca[2][y] == PEDRA && c == 0){
+    }else if(piece[2][y] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0; 
   for (y = 4 - 1; y >= 0; y--) {
-    if(peca[3][y] != PEDRA && c == 0) {
+    if(piece[3][y] != BLOCK && c == 0) {
       inf4++;
-    }else if(peca[3][y] == PEDRA && c == 0){
+    }else if(piece[3][y] == BLOCK && c == 0){
       c++;
     }
   }
@@ -187,43 +187,43 @@ int verificaI(char peca[4][4]){
   }
 }
 
-//diz onde posicionar uma peca que acabou de ser criada
-int verificaS(char peca[4][4]){
+//returs the minimum distance between the piece and the top of the board
+int minDistanceTop(char piece[4][4]){
   int sup, sup1, sup2, sup3, sup4, y, c;
   sup1 = sup2 = sup3 = sup4 = 0;
 
   c = 0;
   for (y = 0; y < 4; y++) {
-    if(peca[0][y] != PEDRA && c == 0) {
+    if(piece[0][y] != BLOCK && c == 0) {
       sup1++;
-    }else if(peca[0][y] == PEDRA && c == 0){
+    }else if(piece[0][y] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0;
   for (y = 0; y < 4; y++) {
-    if(peca[1][y] != PEDRA && c == 0) {
+    if(piece[1][y] != BLOCK && c == 0) {
       sup2++;
-    }else if(peca[1][y] == PEDRA && c == 0){
+    }else if(piece[1][y] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0;
   for (y = 0; y < 4; y++) {
-    if(peca[2][y] != PEDRA && c == 0) {
+    if(piece[2][y] != BLOCK && c == 0) {
       sup3++;
-    }else if(peca[2][y] == PEDRA && c == 0){
+    }else if(piece[2][y] == BLOCK && c == 0){
       c++;
     }
   }
   
   c = 0;
   for (y = 0; y < 4; y++) {
-    if(peca[3][y] != PEDRA && c == 0) {
+    if(piece[3][y] != BLOCK && c == 0) {
       sup4++;
-    }else if(peca[3][y] == PEDRA && c == 0){
+    }else if(piece[3][y] == BLOCK && c == 0){
       c++;
     }
   }
@@ -247,13 +247,13 @@ int verificaS(char peca[4][4]){
   }
 }
 
-//libera a peca pra descer
-int libera(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
+//check if the piece can fall
+int fallAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   int x, y;
 
   for (y = 0; y  < 4; y++) {
     for (x = 0; x < 4; x++) {
-      if(peca[x][y] == PEDRA && tabuleiro[x + eixoX][y + eixoY + 1] == PEDRA){
+      if(piece[x][y] == BLOCK && board[x + positionX][y + positionY + 1] == BLOCK){
         return 1;
       }
     }
@@ -262,22 +262,22 @@ int libera(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
   return 0;
 }
 
-//libera a peca girar
-int liberaW(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
+//check if the piece can spin
+int spinAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   int repositorio[4][4];
   int x, y, libera;
   libera = 0;
 
   for (y = 0; y < 4; y++) {
     for (x = 0; x < 4; x++) {
-      if (peca[y][3 - x] == PEDRA) repositorio[x][y] = peca[y][3 - x];
-      else repositorio[x][y] = BRANCA;
+      if (piece[y][3 - x] == BLOCK) repositorio[x][y] = piece[y][3 - x];
+      else repositorio[x][y] = EMPTY;
     }
   }
 
   for (y = 0; y < 4; y++) {
     for (x = 0; x < 4; x++) {
-      if(repositorio[x][y] == PEDRA && tabuleiro[x + eixoX][y + eixoY] == PEDRA)
+      if(repositorio[x][y] == BLOCK && board[x + positionX][y + positionY] == BLOCK)
         libera = 1;
     }
   }
@@ -285,29 +285,13 @@ int liberaW(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
   return libera;
 }
 
-//libera a peca a ser mover pra esquerda quando A for apertada
-int liberaA(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
+//check if the piece can move left
+int moveLeftAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   int a, b, libera;
   libera = 0;
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
-      if(peca[a][b] == PEDRA && tabuleiro[a + eixoX - 1][b + eixoY] == PEDRA){
-        libera = 1;
-      }
-    }
-  }
-
-  return libera;
-}
-
-//libera a peca descer mais rapido quando S for apertada
-int liberaS(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
-  int a, b, libera;
-  libera = 0;
-  //libera a peca pra cair duas vezes
-  for (b = 0; b  < 4; b++) {
-    for (a = 0; a < 4; a++) {
-      if(peca[a][b] == PEDRA && (tabuleiro[a + eixoX][b + eixoY + 1] == PEDRA || tabuleiro[a + eixoX][b + eixoY + 2] == PEDRA)){
+      if(piece[a][b] == BLOCK && board[a + positionX - 1][b + positionY] == BLOCK){
         libera = 1;
       }
     }
@@ -316,14 +300,30 @@ int liberaS(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
   return libera;
 }
 
-//libera a peca a ser mover pra direita quando D for apertada
-int liberaD(char peca[4][4], char tabuleiro[LARG][ALT], int eixoX, int eixoY){
+//check if the piece can fall twice
+int fallTwiceAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   int a, b, libera;
   libera = 0;
-  //libera a peca pra ir para a direita
+
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
-      if(peca[a][b] == PEDRA && tabuleiro[a + eixoX + 1][b + eixoY] == PEDRA){
+      if(piece[a][b] == BLOCK && (board[a + positionX][b + positionY + 1] == BLOCK || board[a + positionX][b + positionY + 2] == BLOCK)){
+        libera = 1;
+      }
+    }
+  }
+
+  return libera;
+}
+
+//check if the piece can move right
+int moveRightAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+  int a, b, libera;
+  libera = 0;
+  //libera a piece pra ir para a direita
+  for (b = 0; b  < 4; b++) {
+    for (a = 0; a < 4; a++) {
+      if(piece[a][b] == BLOCK && board[a + positionX + 1][b + positionY] == BLOCK){
         libera = 1;
       }
     }
