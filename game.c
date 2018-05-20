@@ -11,7 +11,7 @@
 
 void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int positionX, int positionY){
   int x, y;
-  //prints the board in the window win
+  // prints the board in the window win
   for (y = 0; y < HEIGHT ; y++) {
     for (x = 0; x < WIDTH; x++) {
       wmove(win, y, x);
@@ -19,7 +19,7 @@ void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int po
     }
   }
 
-  //prints the piece in the window win
+  // prints the piece in the window win
   for (y = positionY; y < positionY + 4; y++) {
     for (x = positionX; x < positionX + 4; x++) {
       wmove(win, y, x);
@@ -30,13 +30,12 @@ void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int po
   wrefresh(win);
 }
 
-void create_piece(char piece[4][4], char auxPiece[4][4]){
+void create_piece(char piece[4][4]){
   int i, j;
 
   for (j = 0; j < 4; j++) {
       for (i = 0; i < 4; i++) {
         piece[i][j] = EMPTY;
-        auxPiece[i][j] = EMPTY;
       }
     }
 
@@ -95,7 +94,9 @@ void create_piece(char piece[4][4], char auxPiece[4][4]){
   }
 }
 
-int destroyLine(char board[WIDTH][HEIGHT], long * score){
+int destroyLine(char board[WIDTH][HEIGHT], int * score){
+  /* score is passed as a pointer so i can modify it's value, i didn't return it
+     because the return is already used to return the number of destroyed lines */
   int x, y, a, b;
   int canDestroyLine = 0; 
   int countDestroiedLines = 0;
@@ -154,8 +155,8 @@ int modifyLevel(int countDestroiedLines){
   else                    return 11;
 }
 
-//check if it's an end game situation
-int endGame(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+// check if it's an end game situation
+int checkEndGame(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   char y, x;
   for (y = 0; y < 4; ++y){
     for (x = 0; x < 4; ++x){

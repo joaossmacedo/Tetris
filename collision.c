@@ -8,7 +8,7 @@
 
 
 
-//returs the minimum distance between the piece and the right side of the board
+// returs the minimum distance between the piece and the right side of the board
 int minDistanceRight(char piece[4][4]){
   int dir, dir1, dir2, dir3, dir4, x, c;
   dir1 = dir2 = dir3 = dir4 = 0;
@@ -67,7 +67,7 @@ int minDistanceRight(char piece[4][4]){
   }
 }
 
-//returs the minimum distance between the piece and the left side of the board
+// returs the minimum distance between the piece and the left side of the board
 int minDistanceLeft(char piece[4][4]){
   int esq, esq1, esq2, esq3, esq4, x, c;
   esq1 = esq2 = esq3 = esq4 = 0;
@@ -127,7 +127,7 @@ int minDistanceLeft(char piece[4][4]){
   }
 }
 
-//returs the minimum distance between the piece and the bottom of the board
+// returs the minimum distance between the piece and the bottom of the board
 int minDistanceBottom(char piece[4][4]){
   int inf, inf1, inf2, inf3, inf4, y, c;
   inf1 = inf2 = inf3 = inf4 = 0;
@@ -187,7 +187,7 @@ int minDistanceBottom(char piece[4][4]){
   }
 }
 
-//returs the minimum distance between the piece and the top of the board
+// returs the minimum distance between the piece and the top of the board
 int minDistanceTop(char piece[4][4]){
   int sup, sup1, sup2, sup3, sup4, y, c;
   sup1 = sup2 = sup3 = sup4 = 0;
@@ -247,8 +247,8 @@ int minDistanceTop(char piece[4][4]){
   }
 }
 
-//check if the piece can fall
-int fallAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+// check if the piece can fall
+int canFall(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   int x, y;
 
   for (y = 0; y  < 4; y++) {
@@ -262,11 +262,11 @@ int fallAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int 
   return 0;
 }
 
-//check if the piece can spin
-int spinAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+//  check if the piece can spin
+int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
   int repositorio[4][4];
-  int x, y, libera;
-  libera = 0;
+  int x, y, boolean;
+  boolean = 0;
 
   for (y = 0; y < 4; y++) {
     for (x = 0; x < 4; x++) {
@@ -278,56 +278,55 @@ int spinAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int 
   for (y = 0; y < 4; y++) {
     for (x = 0; x < 4; x++) {
       if(repositorio[x][y] == BLOCK && board[x + positionX][y + positionY] == BLOCK)
-        libera = 1;
+        boolean = 1;
     }
   }
 
-  return libera;
+  return boolean;
 }
 
-//check if the piece can move left
-int moveLeftAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
-  int a, b, libera;
-  libera = 0;
+//  check if the piece can move left
+int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+  int a, b, boolean;
+  boolean = 0;
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
       if(piece[a][b] == BLOCK && board[a + positionX - 1][b + positionY] == BLOCK){
-        libera = 1;
+        boolean = 1;
       }
     }
   }
 
-  return libera;
+  return boolean;
 }
 
-//check if the piece can fall twice
-int fallTwiceAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
-  int a, b, libera;
-  libera = 0;
+// check if the piece can fall twice
+int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+  int a, b, boolean;
+  boolean = 0;
 
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
       if(piece[a][b] == BLOCK && (board[a + positionX][b + positionY + 1] == BLOCK || board[a + positionX][b + positionY + 2] == BLOCK)){
-        libera = 1;
+        boolean = 1;
       }
     }
   }
 
-  return libera;
+  return boolean;
 }
 
-//check if the piece can move right
-int moveRightAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
-  int a, b, libera;
-  libera = 0;
-  //libera a piece pra ir para a direita
+// check if the piece can move right
+int canMoveRight(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+  int a, b, boolean;
+  boolean = 0;
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
       if(piece[a][b] == BLOCK && board[a + positionX + 1][b + positionY] == BLOCK){
-        libera = 1;
+        boolean = 1;
       }
     }
   }
 
-  return libera;
+  return boolean;
 }

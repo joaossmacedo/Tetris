@@ -2,11 +2,11 @@
 #define menu_h
 
 
-void printMenu(long score, long highscore, int level);
+void printMenu(int score, int highscore, int level);
 
 int getHighscore(FILE * highscoreFile);
 
-void saveHighscore(FILE * highscoreFile, long score);
+void saveHighscore(FILE * highscoreFile, int score);
 
 
 #endif /* menu_h */

@@ -15,15 +15,15 @@ int minDistanceBottom(char piece[4][4]);
 
 int minDistanceTop(char piece[4][4]);
 
-int fallAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canFall(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
 
-int spinAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
 
-int moveLeftAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canMoveRight(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
 
-int fallTwiceAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
 
-int moveRightAllowed(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
 
 
 

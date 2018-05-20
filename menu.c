@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "menu.h"
 
-void printMenu(long score, long highscore, int level){
+void printMenu(int score, int highscore, int level){
   clear();
 
   move(2,2);
@@ -20,7 +20,7 @@ void printMenu(long score, long highscore, int level){
   move(9,2);
   printw("Joao Macedo");
   move(17,49);
-  printw("Press P to stop playing");
+  printw("Press P to pause the game");
   move(19,49);
   printw("Press Q to leave the game");
   move(2,55);
@@ -28,42 +28,42 @@ void printMenu(long score, long highscore, int level){
   move(3,55);
   printw("SCORE");
   move(4,55);
-  printw("%ld", score);
+  printw("%d", score);
   move(6,55);
   printw("HIGHSCORE");
   move(7, 55);
   if (score > highscore){
-    printw("%ld", score);
+    printw("%d", score);
   }else {
-    printw("%ld", highscore);
+    printw("%d", highscore);
   }
   refresh();
 }
 
 int getHighscore(FILE * highscoreFile){
-  long highscore;
+  int highscore;
   highscoreFile = fopen("rank.txt", "r");
 
-  fscanf(highscoreFile, "%ld", &highscore);    
+  fscanf(highscoreFile, "%d", &highscore);    
 
   fclose(highscoreFile);
 
   return highscore;
 }
 
-void saveHighscore(FILE * highscoreFile, long score){
-  long highscore;
+void saveHighscore(FILE * highscoreFile, int score){
+  int highscore;
 
   highscoreFile = fopen("rank.txt", "r");
 
-  fscanf(highscoreFile, "%ld", &highscore);    
+  fscanf(highscoreFile, "%d", &highscore);    
 
   fclose(highscoreFile);
 
   if(score > highscore){
     highscoreFile = fopen("rank.txt", "w");
 
-    fprintf(highscoreFile, "%ld", score);
+    fprintf(highscoreFile, "%d", score);
 
     fclose(highscoreFile);
   }

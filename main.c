@@ -15,52 +15,51 @@
 #define HEIGHT 20
 
 int main(){
-  //positionX and positionY are the coordinates of the piece
-  //inferiorLimit is the minimum distance between the piece and the bottom of the board
-  //rightLimit is the minimum distance between the piece and the right side of the board
-  //leftLimit is the minimum distance between the piece and the left side of the board
-  //speed is the speed of the game
+  // positionX and positionY are the coordinates of the piece
+  // inferiorLimit is the minimum distance between the piece and the bottom of the board
+  // rightLimit is the minimum distance between the piece and the right side of the board
+  // leftLimit is the minimum distance between the piece and the left side of the board
+  // speed is the how fast the piece fall
   int userInput;
   char board[WIDTH][HEIGHT], piece[4][4], auxPiece[4][4];
-  char canFall, canFallTwice, canMoveRight, canMoveLeft, canSpin;
-  char countDestroiedLines, level;
+  char positionX, positionY, countDestroiedLines, level;
   char inferiorLimit, superiorLimit, rightLimit, leftLimit, auxInferiorLimit, auxRightLimit, auxLeftLimit;
-  int positionX, positionY, speed, nextSpeed;
-  int i, j;
-  long score, highscore;
+  char i, j;
+  int score, highscore, speed;
+  
   FILE * highscoreFile;
 
   srand(time(NULL));
 
   initscr();
 
-  noecho();  //deactivate the echo
+  noecho();  // deactivate the echo
 
-  cbreak();  //deactivate the buffer
+  cbreak();  // deactivate the buffer
 
-  curs_set(0);  //deactivate the cursor
+  curs_set(0);  // deactivate the cursor
 
   start_color();
 
-  keypad(stdscr, TRUE);  //allow the use of arrow keys
+  keypad(stdscr, TRUE);  // allow the use of arrow keys
 
   init_pair(1,COLOR_WHITE,COLOR_BLACK);
   init_pair(2,COLOR_YELLOW,COLOR_BLUE);
 
   wbkgd(stdscr,COLOR_PAIR(2));
 
-  WINDOW * win;  //create window win where the game will happen
+  WINDOW * win;  // create window win where the game will happen
 
   win = newwin(HEIGHT, WIDTH, 0, (COLS - WIDTH) / 2);
 
-  keypad(win, TRUE);  //allow the use of arrow keys in win
+  keypad(win, TRUE);  // allow the use of arrow keys in win
 
   wbkgd(win,COLOR_PAIR(1));  
 
   do{
     highscore = getHighscore(highscoreFile);
     
-    //sets initial values
+    // sets initial values
     level = 1;
     score = 0;
     countDestroiedLines = 0;
@@ -68,7 +67,7 @@ int main(){
 
     printMenu(score, highscore, level);
 
-    //cleans the board
+    // cleans the board
     for (j = 0; j < HEIGHT; j++) {
       for (i = 0; i < WIDTH; i++) {
         board[i][j] = EMPTY;
@@ -89,20 +88,20 @@ int main(){
     }while(userInput != 'S' && userInput != 's');
 
 
-    while (1) {  //game loop
+    while (1) {  // game loop
 
-      create_piece(piece, auxPiece);
+      create_piece(piece);
 
       rightLimit = minDistanceRight(piece);
       leftLimit = minDistanceLeft(piece);
       inferiorLimit = minDistanceBottom(piece);
       superiorLimit = minDistanceTop(piece);
 
-      //sets the initial position
+      // sets the initial position
       positionY = 0 - superiorLimit;
       positionX = 4 - leftLimit;
 
-      if(endGame(piece, board, positionX, positionY) == 1){
+      if(checkEndGame(piece, board, positionX, positionY) == 1){
         for (j = 0; j < HEIGHT; ++j){
           for (i = 0; i < WIDTH; ++i){
             if(board[i][j] != BLOCK)
@@ -121,27 +120,22 @@ int main(){
 
         printGame(win, board, piece, positionX, positionY);
 
-        canSpin = spinAllowed(piece, board, positionX, positionY);
-        canMoveLeft = moveLeftAllowed(piece, board, positionX, positionY);
-        canFallTwice = fallTwiceAllowed(piece, board, positionX, positionY);
-        canMoveRight = moveRightAllowed(piece, board, positionX, positionY);
-
         wtimeout(win,speed);
         userInput = wgetch(win);
 
-        if(userInput == 'Q' || userInput == 'q'){  //possible quit game
+        if(userInput == 'Q' || userInput == 'q'){  // possible quit game
           saveHighscore(highscoreFile, score);
           delwin(win);
           endwin();
           return 0;
-        }else if(userInput == 'P' || userInput == 'p'){  //stop the game
+        }else if(userInput == 'P' || userInput == 'p'){  // stop the game
           move(15,56);
           printw("PAUSED GAME");
-          move(17, 48);
+          move(17, 49);
           printw("Press P to unpause the game");
           do{
             userInput = getch();
-            if(userInput == 'Q' || userInput == 'q'){  //possible quit game while stopped
+            if(userInput == 'Q' || userInput == 'q'){  // possible quit game while stopped
               saveHighscore(highscoreFile, score);
               delwin(win);
               endwin();
@@ -151,14 +145,29 @@ int main(){
 
           printMenu(score, highscore, level);
 
-        }else if(userInput == RIGHT && positionX < WIDTH - 4 + rightLimit && canMoveRight != 1){ //move right 
+        }else if(userInput == RIGHT && positionX < WIDTH - 4 + rightLimit
+                 && canMoveRight(piece, board, positionX, positionY) != 1){ // move right 
+          
           positionX++;
-        }else if(userInput == LEFT && positionX > 0 - leftLimit && canMoveLeft != 1){ //move left 
+
+        }else if(userInput == LEFT && positionX > 0 - leftLimit 
+                && canMoveLeft(piece, board, positionX, positionY) != 1){ // move left 
+          
           positionX--;
-        }else if(userInput == DOWN && positionY < HEIGHT - 5 + inferiorLimit 
-                && positionY < HEIGHT - 2 && canFallTwice != 1 ){ //fall twice
+
+        }else if(userInput == DOWN && positionY < HEIGHT - 5 + inferiorLimit && positionY < HEIGHT - 2 
+                && canFallTwice(piece, board, positionX, positionY) != 1 ){ // fall twice
+          
           positionY++;
-        }else if(userInput == UP && canSpin != 1){ //spin the piece
+
+        }else if(userInput == UP && canSpin(piece, board, positionX, positionY) != 1){ // spin the piece
+          
+          for (j = 0; j < 4; j++) {
+            for (i = 0; i < 4; i++) {
+              auxPiece[i][j] = EMPTY;
+            }
+          }
+
           for (j = 0; j < 4; j++) {
             for (i = 0; i < 4; i++) {
               auxPiece[i][j] = piece[j][3 - i];
@@ -170,7 +179,7 @@ int main(){
             }
           }
 
-          //doesn't let the piece go out of bounds
+          // doesn't let the piece go out of bounds
           auxRightLimit = minDistanceRight(piece);
           auxLeftLimit = minDistanceLeft(piece);
           auxInferiorLimit = minDistanceBottom(piece);
@@ -188,13 +197,13 @@ int main(){
           if(inferiorLimit > auxInferiorLimit){
             positionY -= (inferiorLimit - auxInferiorLimit);
           }
+
           inferiorLimit = auxInferiorLimit;
+
         }
 
-        canFall = fallAllowed(piece, board, positionX, positionY);
-
-        //piece fall
-        if(positionY < HEIGHT - 4 + inferiorLimit && canFall != 1){
+        // piece fall
+        if(positionY < HEIGHT - 4 + inferiorLimit && canFall(piece, board, positionX, positionY) != 1){
           positionY++;
         }else{
           break;
@@ -204,14 +213,14 @@ int main(){
       score += 5;
 
       move(4, 55);
-      printw("%ld", score);
+      printw("%d", score);
       move (7, 55);
       if (score > highscore){  
-        printw("%ld", score);
+        printw("%d", score);
       }
       refresh();
 
-      //add the piece to the board
+      // add the piece to the board
       for (j = 0; j < 4; j++) {
         for (i = 0; i < 4; i++) {
           if (piece[i][j] == BLOCK) {
@@ -225,11 +234,7 @@ int main(){
 
       level = modifyLevel(countDestroiedLines);
 
-      nextSpeed = modifySpeed(countDestroiedLines);
-      if (speed != nextSpeed){
-        printMenu(score, highscore, level);
-      } 
-      speed = nextSpeed;
+      speed = modifySpeed(countDestroiedLines);
 
       wrefresh(win);
     }
