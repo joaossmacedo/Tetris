@@ -15,20 +15,18 @@
 #define HEIGHT 20
 
 int main(){
-  //x, y, a and b are only used in for
   //positionX and positionY are the coordinates of the piece
   //inferiorLimit is the minimum distance between the piece and the bottom of the board
   //rightLimit is the minimum distance between the piece and the right side of the board
   //leftLimit is the minimum distance between the piece and the left side of the board
-  //canDestroyLine checks if the line can be destroyed
   //speed is the speed of the game
   int userInput;
   char board[WIDTH][HEIGHT], piece[4][4], auxPiece[4][4];
-  char canFall, canFallTwice, canMoveRight, canMoveLeft, canSpin, canDestroyLine;
+  char canFall, canFallTwice, canMoveRight, canMoveLeft, canSpin;
   char countDestroiedLines, level;
   char inferiorLimit, superiorLimit, rightLimit, leftLimit, auxInferiorLimit, auxRightLimit, auxLeftLimit;
   int positionX, positionY, speed, nextSpeed;
-  int x, y, a, b;
+  int i, j;
   long score, highscore;
   FILE * highscoreFile;
 
@@ -71,9 +69,9 @@ int main(){
     printMenu(score, highscore, level);
 
     //cleans the board
-    for (y = 0; y < HEIGHT; y++) {
-      for (x = 0; x < WIDTH; x++) {
-        board[x][y] = EMPTY;
+    for (j = 0; j < HEIGHT; j++) {
+      for (i = 0; i < WIDTH; i++) {
+        board[i][j] = EMPTY;
       }
     }
 
@@ -105,10 +103,10 @@ int main(){
       positionX = 4 - leftLimit;
 
       if(endGame(piece, board, positionX, positionY) == 1){
-        for (y = 0; y < HEIGHT; ++y){
-          for (x = 0; x < WIDTH; ++x){
-            if(board[x][y] != BLOCK)
-              board[x][y] = EMPTY;
+        for (j = 0; j < HEIGHT; ++j){
+          for (i = 0; i < WIDTH; ++i){
+            if(board[i][j] != BLOCK)
+              board[i][j] = EMPTY;
           }       
         }
 
@@ -161,14 +159,14 @@ int main(){
                 && positionY < HEIGHT - 2 && canFallTwice != 1 ){ //fall twice
           positionY++;
         }else if(userInput == UP && canSpin != 1){ //spin the piece
-          for (b = 0; b < 4; b++) {
-            for (a = 0; a < 4; a++) {
-              auxPiece[a][b] = piece[b][3 - a];
+          for (j = 0; j < 4; j++) {
+            for (i = 0; i < 4; i++) {
+              auxPiece[i][j] = piece[j][3 - i];
             }
           }
-          for (b = 0; b < 4; b++) {
-            for (a = 0; a < 4; a++) {
-              piece[a][b] = auxPiece[a][b];
+          for (j = 0; j < 4; j++) {
+            for (i = 0; i < 4; i++) {
+              piece[i][j] = auxPiece[i][j];
             }
           }
 
@@ -214,37 +212,16 @@ int main(){
       refresh();
 
       //add the piece to the board
-      for (y = 0; y < 4; y++) {
-        for (x = 0; x < 4; x++) {
-          if (piece[x][y] == BLOCK) {
-            board[positionX + x][positionY + y] = piece[x][y];
+      for (j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+          if (piece[i][j] == BLOCK) {
+            board[positionX + i][positionY + j] = piece[i][j];
           }
         }
       }
 
-      //destroy the line if it's full
-      for (y = HEIGHT - 1; y >= 0; y--) {
-        for (x = 0; x < WIDTH; x++) {
-          if (board[x][y] == BLOCK) {
-            canDestroyLine++;
-          }
-          if (canDestroyLine == WIDTH) {
-            for (a = 0; a < WIDTH; a++) {
-              board[a][y] = 0;
-            }
-            for (b = y; b >= 1; b--) {
-              for (a = 0; a < WIDTH; a++) {
-                board[a][b] = board[a][b - 1];
-              }
-            }
-            countDestroiedLines++;
-            y++;
-            score += 100;
-            printMenu(score, highscore, level);
-          }
-        }
-        canDestroyLine = 0;
-      }
+      countDestroiedLines += destroyLine(board, &score);
+      printMenu(score, highscore, level);
 
       level = modifyLevel(countDestroiedLines);
 
