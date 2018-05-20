@@ -8,7 +8,9 @@
 
 void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int positionX, int positionY);
 
-void create_piece(char piece[4][4]);
+void createPiece(char piece[4][4]);
+
+void spinPiece(char board[WIDTH][HEIGHT], char piece[4][4], char * positionX, char * positionY);
 
 int destroyLine(char board[WIDTH][HEIGHT], int * score);
 

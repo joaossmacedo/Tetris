@@ -19,11 +19,10 @@ int main(){
   // inferiorLimit is the minimum distance between the piece and the bottom of the board
   // rightLimit is the minimum distance between the piece and the right side of the board
   // leftLimit is the minimum distance between the piece and the left side of the board
-  // speed is the how fast the piece fall
   int userInput;
   char board[WIDTH][HEIGHT], piece[4][4], auxPiece[4][4];
   char positionX, positionY, countDestroiedLines, level;
-  char inferiorLimit, superiorLimit, rightLimit, leftLimit, auxInferiorLimit, auxRightLimit, auxLeftLimit;
+  char inferiorLimit, superiorLimit, rightLimit, leftLimit;
   char i, j;
   int score, highscore, speed;
   
@@ -90,7 +89,7 @@ int main(){
 
     while (1) {  // game loop
 
-      create_piece(piece);
+      createPiece(piece);
 
       rightLimit = minDistanceRight(piece);
       leftLimit = minDistanceLeft(piece);
@@ -124,15 +123,19 @@ int main(){
         userInput = wgetch(win);
 
         if(userInput == 'Q' || userInput == 'q'){  // possible quit game
+          
           saveHighscore(highscoreFile, score);
           delwin(win);
           endwin();
           return 0;
+        
         }else if(userInput == 'P' || userInput == 'p'){  // stop the game
+          
           move(15,56);
           printw("PAUSED GAME");
           move(17, 49);
           printw("Press P to unpause the game");
+          
           do{
             userInput = getch();
             if(userInput == 'Q' || userInput == 'q'){  // possible quit game while stopped
@@ -161,44 +164,11 @@ int main(){
           positionY++;
 
         }else if(userInput == UP && canSpin(piece, board, positionX, positionY) != 1){ // spin the piece
-          
-          for (j = 0; j < 4; j++) {
-            for (i = 0; i < 4; i++) {
-              auxPiece[i][j] = EMPTY;
-            }
-          }
+          spinPiece(board, piece, &positionX, &positionY);
 
-          for (j = 0; j < 4; j++) {
-            for (i = 0; i < 4; i++) {
-              auxPiece[i][j] = piece[j][3 - i];
-            }
-          }
-          for (j = 0; j < 4; j++) {
-            for (i = 0; i < 4; i++) {
-              piece[i][j] = auxPiece[i][j];
-            }
-          }
-
-          // doesn't let the piece go out of bounds
-          auxRightLimit = minDistanceRight(piece);
-          auxLeftLimit = minDistanceLeft(piece);
-          auxInferiorLimit = minDistanceBottom(piece);
-          
-          if(rightLimit > auxRightLimit && positionX + 4 - auxRightLimit > WIDTH - 1){
-            positionX -= (rightLimit - auxRightLimit);
-          }
-          rightLimit = auxRightLimit;
-
-          if(leftLimit > auxLeftLimit && positionX + auxLeftLimit < 0){
-            positionX += (leftLimit - auxLeftLimit);
-          }
-          leftLimit = auxLeftLimit;
-
-          if(inferiorLimit > auxInferiorLimit){
-            positionY -= (inferiorLimit - auxInferiorLimit);
-          }
-
-          inferiorLimit = auxInferiorLimit;
+          rightLimit = minDistanceRight(piece);
+          leftLimit = minDistanceLeft(piece);
+          inferiorLimit = minDistanceBottom(piece);
 
         }
 

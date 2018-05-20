@@ -30,7 +30,7 @@ void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int po
   wrefresh(win);
 }
 
-void create_piece(char piece[4][4]){
+void createPiece(char piece[4][4]){
   int i, j;
 
   for (j = 0; j < 4; j++) {
@@ -92,6 +92,52 @@ void create_piece(char piece[4][4]){
       piece[3][2] = BLOCK;
       break;
   }
+}
+
+void spinPiece(char board[WIDTH][HEIGHT], char piece[4][4], char * positionX, char * positionY){
+  /*  as i can only return one variable, positionX and positionY are passed as pointer 
+      so i can modify both inside this function  */
+  char auxPiece[4][4];
+  int i, j;
+  char inferiorLimit, rightLimit, leftLimit, auxInferiorLimit, auxRightLimit, auxLeftLimit;
+
+  rightLimit = minDistanceRight(piece);
+  leftLimit = minDistanceLeft(piece);
+  inferiorLimit = minDistanceBottom(piece);
+
+  for (j = 0; j < 4; j++) {
+    for (i = 0; i < 4; i++) {
+      auxPiece[i][j] = EMPTY;
+    }
+  }
+
+  for (j = 0; j < 4; j++) {
+    for (i = 0; i < 4; i++) {
+      auxPiece[i][j] = piece[j][3 - i];
+    }
+  }
+  for (j = 0; j < 4; j++) {
+    for (i = 0; i < 4; i++) {
+      piece[i][j] = auxPiece[i][j];
+    }
+  }
+
+  auxRightLimit = minDistanceRight(piece);
+  auxLeftLimit = minDistanceLeft(piece);
+  auxInferiorLimit = minDistanceBottom(piece);
+  
+  if(rightLimit > auxRightLimit && *positionX + 4 - auxRightLimit > WIDTH - 1){
+    *positionX -= (rightLimit - auxRightLimit);
+  }
+
+  if(leftLimit > auxLeftLimit && *positionX + auxLeftLimit < 0){
+    *positionX += (leftLimit - auxLeftLimit);
+  }
+
+  if(inferiorLimit > auxInferiorLimit){
+    *positionY -= (inferiorLimit - auxInferiorLimit);
+  }
+
 }
 
 int destroyLine(char board[WIDTH][HEIGHT], int * score){
