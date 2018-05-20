@@ -6,3 +6,5 @@ The teacher divided the classroom in groups, then he informed that each group wo
 work as one of our term grades. By the end of the term (july/17) we delivered the code to the teacher. 
 
 My group was composed of Ademario Junior, Antonio Vitor, Danilo Felipe, Guilherme Francisco and João Macedo(me).
+
+In may/2018 I decided to update this code, these changes can be seen on the branch update. Now the code is fully translated into english and is better organized.
