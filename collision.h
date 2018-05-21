@@ -1,6 +1,7 @@
 #ifndef collision_h
 #define collision_h
 
+#include "coordinates.h"
 #include <ncurses.h>
 #include <stdio.h>
 #define WIDTH 10
@@ -15,15 +16,15 @@ int minDistanceBottom(char piece[4][4]);
 
 int minDistanceTop(char piece[4][4]);
 
-int canFall(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canFall(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position);
 
-int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position);
 
-int canMoveRight(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canMoveRight(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position);
 
-int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position);
 
-int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY);
+int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position);
 
 
 

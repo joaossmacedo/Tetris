@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "coordinates.h"
 #include "collision.h"
 #include "menu.h"
 #include "game.h"
@@ -15,17 +16,21 @@
 #define HEIGHT 20
 
 int main(){
-  // positionX and positionY are the coordinates of the piece
+  // position.x and position.y are the coordinates of the piece
   // inferiorLimit is the minimum distance between the piece and the bottom of the board
   // rightLimit is the minimum distance between the piece and the right side of the board
   // leftLimit is the minimum distance between the piece and the left side of the board
   int userInput;
   char board[WIDTH][HEIGHT], piece[4][4], auxPiece[4][4];
-  char positionX, positionY, countDestroiedLines, level;
+  char countDestroiedLines, level;
   char inferiorLimit, superiorLimit, rightLimit, leftLimit;
   char i, j;
   int score, highscore, speed;
   
+  struct Coordinates position;
+  position.x = 0;
+  position.y = 0;
+
   FILE * highscoreFile;
 
   srand(time(NULL));
@@ -97,10 +102,10 @@ int main(){
       superiorLimit = minDistanceTop(piece);
 
       // sets the initial position
-      positionY = 0 - superiorLimit;
-      positionX = 4 - leftLimit;
+      position.y = 0 - superiorLimit;
+      position.x = 4 - leftLimit;
 
-      if(checkEndGame(piece, board, positionX, positionY) == 1){
+      if(checkEndGame(piece, board, position) == 1){
         for (j = 0; j < HEIGHT; ++j){
           for (i = 0; i < WIDTH; ++i){
             if(board[i][j] != BLOCK)
@@ -117,7 +122,7 @@ int main(){
       while (1) {
         wclear(win);
 
-        printGame(win, board, piece, positionX, positionY);
+        printGame(win, board, piece, position);
 
         wtimeout(win,speed);
         userInput = wgetch(win);
@@ -148,23 +153,23 @@ int main(){
 
           printMenu(score, highscore, level);
 
-        }else if(userInput == RIGHT && positionX < WIDTH - 4 + rightLimit
-                 && canMoveRight(piece, board, positionX, positionY) != 1){ // move right 
+        }else if(userInput == RIGHT && position.x < WIDTH - 4 + rightLimit
+                 && canMoveRight(piece, board, position) != 1){ // move right 
           
-          positionX++;
+          position.x++;
 
-        }else if(userInput == LEFT && positionX > 0 - leftLimit 
-                && canMoveLeft(piece, board, positionX, positionY) != 1){ // move left 
+        }else if(userInput == LEFT && position.x > 0 - leftLimit 
+                && canMoveLeft(piece, board, position) != 1){ // move left 
           
-          positionX--;
+          position.x--;
 
-        }else if(userInput == DOWN && positionY < HEIGHT - 5 + inferiorLimit && positionY < HEIGHT - 2 
-                && canFallTwice(piece, board, positionX, positionY) != 1 ){ // fall twice
+        }else if(userInput == DOWN && position.y < HEIGHT - 5 + inferiorLimit && position.y < HEIGHT - 2 
+                && canFallTwice(piece, board, position) != 1 ){ // fall twice
           
-          positionY++;
+          position.y++;
 
-        }else if(userInput == UP && canSpin(piece, board, positionX, positionY) != 1){ // spin the piece
-          spinPiece(board, piece, &positionX, &positionY);
+        }else if(userInput == UP && canSpin(piece, board, position) != 1){ // spin the piece
+          position = spinPiece(board, piece, position);
 
           rightLimit = minDistanceRight(piece);
           leftLimit = minDistanceLeft(piece);
@@ -172,9 +177,8 @@ int main(){
 
         }
 
-        // piece fall
-        if(positionY < HEIGHT - 4 + inferiorLimit && canFall(piece, board, positionX, positionY) != 1){
-          positionY++;
+        if(position.y < HEIGHT - 4 + inferiorLimit && canFall(piece, board, position) != 1){ // piece fall
+          position.y++;
         }else{
           break;
         }
@@ -194,7 +198,7 @@ int main(){
       for (j = 0; j < 4; j++) {
         for (i = 0; i < 4; i++) {
           if (piece[i][j] == BLOCK) {
-            board[positionX + i][positionY + j] = piece[i][j];
+            board[position.x + i][position.y + j] = piece[i][j];
           }
         }
       }
@@ -213,7 +217,7 @@ int main(){
     printw("END GAME");
     move(17, 49);
     printw("Press R to play again  ");
-    printGame(win, board, piece, positionX, positionY);
+    printGame(win, board, piece, position);
 
 
     do{
@@ -228,4 +232,3 @@ int main(){
 
   return 0;
 }
-

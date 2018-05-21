@@ -248,12 +248,12 @@ int minDistanceTop(char piece[4][4]){
 }
 
 // check if the piece can fall
-int canFall(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+int canFall(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position){
   int x, y;
 
   for (y = 0; y  < 4; y++) {
     for (x = 0; x < 4; x++) {
-      if(piece[x][y] == BLOCK && board[x + positionX][y + positionY + 1] == BLOCK){
+      if(piece[x][y] == BLOCK && board[x + position.x][y + position.y + 1] == BLOCK){
         return 1;
       }
     }
@@ -263,7 +263,7 @@ int canFall(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int posi
 }
 
 //  check if the piece can spin
-int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position){
   int repositorio[4][4];
   int x, y, boolean;
   boolean = 0;
@@ -277,7 +277,7 @@ int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int posi
 
   for (y = 0; y < 4; y++) {
     for (x = 0; x < 4; x++) {
-      if(repositorio[x][y] == BLOCK && board[x + positionX][y + positionY] == BLOCK)
+      if(repositorio[x][y] == BLOCK && board[x + position.x][y + position.y] == BLOCK)
         boolean = 1;
     }
   }
@@ -286,12 +286,12 @@ int canSpin(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int posi
 }
 
 //  check if the piece can move left
-int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position){
   int a, b, boolean;
   boolean = 0;
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
-      if(piece[a][b] == BLOCK && board[a + positionX - 1][b + positionY] == BLOCK){
+      if(piece[a][b] == BLOCK && board[a + position.x - 1][b + position.y] == BLOCK){
         boolean = 1;
       }
     }
@@ -301,13 +301,13 @@ int canMoveLeft(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int 
 }
 
 // check if the piece can fall twice
-int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position){
   int a, b, boolean;
   boolean = 0;
 
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
-      if(piece[a][b] == BLOCK && (board[a + positionX][b + positionY + 1] == BLOCK || board[a + positionX][b + positionY + 2] == BLOCK)){
+      if(piece[a][b] == BLOCK && (board[a + position.x][b + position.y + 1] == BLOCK || board[a + position.x][b + position.y + 2] == BLOCK)){
         boolean = 1;
       }
     }
@@ -317,12 +317,12 @@ int canFallTwice(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int
 }
 
 // check if the piece can move right
-int canMoveRight(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+int canMoveRight(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position){
   int a, b, boolean;
   boolean = 0;
   for (b = 0; b  < 4; b++) {
     for (a = 0; a < 4; a++) {
-      if(piece[a][b] == BLOCK && board[a + positionX + 1][b + positionY] == BLOCK){
+      if(piece[a][b] == BLOCK && board[a + position.x + 1][b + position.y] == BLOCK){
         boolean = 1;
       }
     }

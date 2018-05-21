@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "coordinates.h"
 #include "game.h"
 #include "collision.h"
 #define WIDTH 10
@@ -9,7 +10,8 @@
 #define BLOCK '#'
 #define EMPTY 0
 
-void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int positionX, int positionY){
+
+void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], struct Coordinates position){
   int x, y;
   // prints the board in the window win
   for (y = 0; y < HEIGHT ; y++) {
@@ -20,10 +22,10 @@ void printGame(WINDOW * win, char board[WIDTH][HEIGHT], char piece[4][4], int po
   }
 
   // prints the piece in the window win
-  for (y = positionY; y < positionY + 4; y++) {
-    for (x = positionX; x < positionX + 4; x++) {
+  for (y = position.y; y < position.y + 4; y++) {
+    for (x = position.x; x < position.x + 4; x++) {
       wmove(win, y, x);
-      wprintw(win, "%c", piece[x - positionX][y - positionY]);
+      wprintw(win, "%c", piece[x - position.x][y - position.y]);
     }
   }
 
@@ -94,9 +96,7 @@ void createPiece(char piece[4][4]){
   }
 }
 
-void spinPiece(char board[WIDTH][HEIGHT], char piece[4][4], char * positionX, char * positionY){
-  /*  as i can only return one variable, positionX and positionY are passed as pointer 
-      so i can modify both inside this function  */
+struct Coordinates spinPiece(char board[WIDTH][HEIGHT], char piece[4][4], struct Coordinates position){
   char auxPiece[4][4];
   int i, j;
   char inferiorLimit, rightLimit, leftLimit, auxInferiorLimit, auxRightLimit, auxLeftLimit;
@@ -126,18 +126,19 @@ void spinPiece(char board[WIDTH][HEIGHT], char piece[4][4], char * positionX, ch
   auxLeftLimit = minDistanceLeft(piece);
   auxInferiorLimit = minDistanceBottom(piece);
   
-  if(rightLimit > auxRightLimit && *positionX + 4 - auxRightLimit > WIDTH - 1){
-    *positionX -= (rightLimit - auxRightLimit);
+  if(rightLimit > auxRightLimit && position.x + 4 - auxRightLimit > WIDTH - 1){
+    position.x -= (rightLimit - auxRightLimit);
   }
 
-  if(leftLimit > auxLeftLimit && *positionX + auxLeftLimit < 0){
-    *positionX += (leftLimit - auxLeftLimit);
+  if(leftLimit > auxLeftLimit && position.x + auxLeftLimit < 0){
+    position.x += (leftLimit - auxLeftLimit);
   }
 
   if(inferiorLimit > auxInferiorLimit){
-    *positionY -= (inferiorLimit - auxInferiorLimit);
+    position.y -= (inferiorLimit - auxInferiorLimit);
   }
 
+  return position;
 }
 
 int destroyLine(char board[WIDTH][HEIGHT], int * score){
@@ -202,11 +203,11 @@ int modifyLevel(int countDestroiedLines){
 }
 
 // check if it's an end game situation
-int checkEndGame(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int positionY){
+int checkEndGame(char piece[4][4], char board[WIDTH][HEIGHT], struct Coordinates position){
   char y, x;
   for (y = 0; y < 4; ++y){
     for (x = 0; x < 4; ++x){
-      if(board[positionX + x][positionY + y] == BLOCK && piece[x][y] == BLOCK){
+      if(board[position.x + x][position.y + y] == BLOCK && piece[x][y] == BLOCK){
         return 1;
       }
     }
@@ -214,4 +215,3 @@ int checkEndGame(char piece[4][4], char board[WIDTH][HEIGHT], int positionX, int
 
   return 0;
 }
-
