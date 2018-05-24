@@ -31,8 +31,6 @@ int main(){
   position.x = 0;
   position.y = 0;
 
-  FILE * highscoreFile;
-
   srand(time(NULL));
 
   initscr();
@@ -61,7 +59,7 @@ int main(){
   wbkgd(win,COLOR_PAIR(1));  
 
   do{
-    highscore = getHighscore(highscoreFile);
+    highscore = getHighscore();
     
     // sets initial values
     level = 1;
@@ -114,7 +112,7 @@ int main(){
         }
 
         printMenu(score, highscore, level);
-        saveHighscore(highscoreFile, score);
+        saveHighscore(score);
 
         break;
       }
@@ -129,7 +127,7 @@ int main(){
 
         if(userInput == 'Q' || userInput == 'q'){  // possible quit game
           
-          saveHighscore(highscoreFile, score);
+          saveHighscore(score);
           delwin(win);
           endwin();
           return 0;
@@ -144,7 +142,7 @@ int main(){
           do{
             userInput = getch();
             if(userInput == 'Q' || userInput == 'q'){  // possible quit game while stopped
-              saveHighscore(highscoreFile, score);
+              saveHighscore(score);
               delwin(win);
               endwin();
               return 0;

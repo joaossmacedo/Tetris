@@ -4,9 +4,9 @@
 
 void printMenu(int score, int highscore, int level);
 
-int getHighscore(FILE * highscoreFile);
+int getHighscore();
 
-void saveHighscore(FILE * highscoreFile, int score);
+void saveHighscore(int score);
 
 
 #endif /* menu_h */

@@ -40,25 +40,33 @@ void printMenu(int score, int highscore, int level){
   refresh();
 }
 
-int getHighscore(FILE * highscoreFile){
+int getHighscore(){
+  FILE * highscoreFile; 
+
   int highscore;
-  highscoreFile = fopen("rank.txt", "r");
+  
+  if ((highscoreFile = fopen("rank.txt", "r"))){
+    fscanf(highscoreFile, "%d", &highscore);    
 
-  fscanf(highscoreFile, "%d", &highscore);    
-
-  fclose(highscoreFile);
+    fclose(highscoreFile);
+  } else {
+    highscore = 0;
+  }
 
   return highscore;
 }
 
-void saveHighscore(FILE * highscoreFile, int score){
+void saveHighscore(int score){
+  FILE * highscoreFile;
   int highscore;
 
-  highscoreFile = fopen("rank.txt", "r");
+  if ((highscoreFile = fopen("rank.txt", "r"))){
+    fscanf(highscoreFile, "%d", &highscore);    
 
-  fscanf(highscoreFile, "%d", &highscore);    
-
-  fclose(highscoreFile);
+    fclose(highscoreFile);
+  } else {
+    highscore = 0;
+  }
 
   if(score > highscore){
     highscoreFile = fopen("rank.txt", "w");
