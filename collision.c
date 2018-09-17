@@ -10,7 +10,7 @@
 
 // returs the minimum distance between the piece and the right side of the board
 int minDistanceRight(char piece[4][4]){
-  int dir, dir1, dir2, dir3, dir4, x, c;
+  int dir1, dir2, dir3, dir4, x, c;
   dir1 = dir2 = dir3 = dir4 = 0;
 
   c = 0;
@@ -69,7 +69,7 @@ int minDistanceRight(char piece[4][4]){
 
 // returs the minimum distance between the piece and the left side of the board
 int minDistanceLeft(char piece[4][4]){
-  int esq, esq1, esq2, esq3, esq4, x, c;
+  int esq1, esq2, esq3, esq4, x, c;
   esq1 = esq2 = esq3 = esq4 = 0;
 
   c = 0;
@@ -129,7 +129,7 @@ int minDistanceLeft(char piece[4][4]){
 
 // returs the minimum distance between the piece and the bottom of the board
 int minDistanceBottom(char piece[4][4]){
-  int inf, inf1, inf2, inf3, inf4, y, c;
+  int inf1, inf2, inf3, inf4, y, c;
   inf1 = inf2 = inf3 = inf4 = 0;
 
   c = 0; 
@@ -189,7 +189,7 @@ int minDistanceBottom(char piece[4][4]){
 
 // returs the minimum distance between the piece and the top of the board
 int minDistanceTop(char piece[4][4]){
-  int sup, sup1, sup2, sup3, sup4, y, c;
+  int sup1, sup2, sup3, sup4, y, c;
   sup1 = sup2 = sup3 = sup4 = 0;
 
   c = 0;

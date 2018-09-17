@@ -21,7 +21,7 @@ int main(){
   // rightLimit is the minimum distance between the piece and the right side of the board
   // leftLimit is the minimum distance between the piece and the left side of the board
   int userInput;
-  char board[WIDTH][HEIGHT], piece[4][4], auxPiece[4][4];
+  char board[WIDTH][HEIGHT], piece[4][4];
   char countDestroiedLines, level;
   char inferiorLimit, superiorLimit, rightLimit, leftLimit;
   char i, j;
