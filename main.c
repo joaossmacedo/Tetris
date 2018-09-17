@@ -24,7 +24,7 @@ int main(){
   char board[WIDTH][HEIGHT], piece[4][4];
   char countDestroiedLines, level;
   char inferiorLimit, superiorLimit, rightLimit, leftLimit;
-  char i, j;
+  unsigned char i, j;
   int score, highscore, speed;
   
   struct Coordinates position;

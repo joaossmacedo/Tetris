@@ -2,8 +2,6 @@
 #define collision_h
 
 #include "coordinates.h"
-#include <ncurses.h>
-#include <stdio.h>
 #define WIDTH 10
 #define HEIGHT 20
 
