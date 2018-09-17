@@ -40,7 +40,7 @@ void printMenu(int score, int highscore, int level){
   refresh();
 }
 
-int getHighscore(){
+int getHighscore(void){
   FILE * highscoreFile; 
 
   int highscore;
